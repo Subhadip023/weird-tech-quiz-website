@@ -1,4 +1,3 @@
-console.log("quiz app");
 
 let quizQuestions = [
    {
@@ -72,46 +71,80 @@ const changingAnswerThree = document.querySelectorAll(".main-ans");
 
 const changingAnswerFour = document.querySelectorAll(".ans-three");
 
-const submit = document.querySelectorAll(".submit-btn");
+const submit = document.querySelectorAll(".submit-btn")[0];
 
-let currentQuiz = 0;
-
-let score = 0;
+let currentQuiz=0
+let score=0
 
 function loadQuiz () {
     currentQuiz = 0;
     score = 0;
     submit.innerHTML = "next";
-    showQuestion();
-}
+    
+    showQuestion(currentQuiz);
 
-function showQuestion (){
+    
+}
+submit.addEventListener('click', (e) => {
+    currentQuiz++;
+    if (currentQuiz < quizQuestions.length) {
+        showQuestion(currentQuiz);
+    } else {
+        
+        document.querySelectorAll('.question-div')[0].innerHTML="Your score is " + score + " out of " + quizQuestions.length;
+        document.querySelector(".answer-div").innerHTML=''
+        
+        submit.innerHTML=''
+        submit.classList.remove('submit-btn')
+        
+    }
+})
+
+function showQuestion (currentQuiz){
     let currentQuestion = quizQuestions[currentQuiz];
     let qNo = currentQuiz + 1;
     changingQuestions[0].innerHTML = qNo + ". " + currentQuestion.question;
 
-    changingAnswerOne[0].innerHTML = currentQuestion.option[0];
-    changingAnswerTwo[0].innerHTML = currentQuestion.option[1];
-    changingAnswerThree[0].innerHTML = currentQuestion.option[2];
-    changingAnswerFour[0].innerHTML = currentQuestion.option[3];
+    
 
     const optionsContainer = document.querySelector(".answer-div");
     optionsContainer.innerHTML = "";
 
-    currentQuestion.option.forEach((optionText, index) => {
-        const button = document.createElement("button");
-        button.innerHTML = optionText;
-        button.classList.add("btn");
-        optionsContainer.appendChild(button);
-        if(optionText.answer){
-          button.dataset.answer = option.answer
+    let answered = false;  
+
+for (let i = 0; i < 4; i++) {   
+    const option = document.createElement("button");
+    option.classList.add("ans");
+    option.value = currentQuestion.option[i];
+    option.innerHTML = currentQuestion.option[i];
+    
+    option.addEventListener("click", (e) => {
+        if (answered) return;  
+        
+        const isCorrect = e.target.value === quizQuestions[currentQuiz].answer;
+        console.log(isCorrect);
+        
+        if (isCorrect) {
+            score++;
+            option.classList.add("answer");
+        } else {
+            option.classList.add("incorrect");
         }
-        button.addEventListener("click", checkAnswer);
+       
+        
+        answered = true;  
     });
+  
+    
+    optionsContainer.appendChild(option);
 }
 
-function checkAnswer(e){
-    const selectedBtn = e.target;
+    
+}
+
+function checkAnswerForButton(e){
+    const selectedBtn = e.target.value;
+    console.log(selectedBtn);
     const isCorrect = selectedBtn.dataset.answer === answer;
     if(isCorrect){
        selectedBtn.classList.add("answer")
@@ -129,6 +162,7 @@ function checkAnswer(selectedOption) {
         showQuestion();
     } else {
         // Show final score or end of quiz message
+        console.log(score)
     }
 }
 
