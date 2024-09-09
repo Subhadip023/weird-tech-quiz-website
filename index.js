@@ -61,129 +61,74 @@ let quizQuestions = [
     },
 ]
 
-const changingQuestions = document.querySelectorAll(".question");
+const changingQuestions = document.querySelector(".question");
+const optionsContainer = document.querySelector(".answer-div");
+const submitButton = document.querySelector(".submit-btn");
 
-const changingAnswerOne = document.querySelectorAll(".ans-one");
+let currentQuiz = 0;
+let score = 0;
 
-const changingAnswerTwo = document.querySelectorAll(".ans-two");
-
-const changingAnswerThree = document.querySelectorAll(".main-ans");
-
-const changingAnswerFour = document.querySelectorAll(".ans-three");
-
-const submit = document.querySelectorAll(".submit-btn")[0];
-
-let currentQuiz=0
-let score=0
-
-function loadQuiz () {
+// Load initial quiz
+function loadQuiz() {
     currentQuiz = 0;
     score = 0;
-    submit.innerHTML = "next";
-    
+    submitButton.innerHTML = "Next";
     showQuestion(currentQuiz);
-
-    
 }
-submit.addEventListener('click', (e) => {
+
+submitButton.addEventListener("click", () => {
     currentQuiz++;
     if (currentQuiz < quizQuestions.length) {
         showQuestion(currentQuiz);
     } else {
-        
-        document.querySelectorAll('.question-div')[0].innerHTML="Your score is " + score + " out of " + quizQuestions.length;
-        document.querySelector(".answer-div").innerHTML=''
-        
-        submit.innerHTML=''
-        submit.classList.remove('submit-btn')
-        
+        showFinalScore();
     }
-})
+});
 
-function showQuestion (currentQuiz){
-    let currentQuestion = quizQuestions[currentQuiz];
-    let qNo = currentQuiz + 1;
-    changingQuestions[0].innerHTML = qNo + ". " + currentQuestion.question;
-
+function showQuestion(index) {
+    const currentQuestion = quizQuestions[index];
     
-
-    const optionsContainer = document.querySelector(".answer-div");
+    // Update the question text
+    changingQuestions.innerHTML = `${index + 1}. ${currentQuestion.question}`;
+    
+    // Clear previous options
     optionsContainer.innerHTML = "";
 
-    let answered = false;  
+    // Generate new options
+    currentQuestion.option.forEach(optionText => {
+        const optionButton = document.createElement("button");
+        optionButton.classList.add("ans");
+        optionButton.innerHTML = optionText;
+        optionButton.value = optionText;
 
-for (let i = 0; i < 4; i++) {   
-    const option = document.createElement("button");
-    option.classList.add("ans");
-    option.value = currentQuestion.option[i];
-    option.innerHTML = currentQuestion.option[i];
-    
-    option.addEventListener("click", (e) => {
-        if (answered) return;  
-        
-        const isCorrect = e.target.value === quizQuestions[currentQuiz].answer;
-        console.log(isCorrect);
-        
-        if (isCorrect) {
-            score++;
-            option.classList.add("answer");
-        } else {
-            option.classList.add("incorrect");
-        }
-       
-        
-        answered = true;  
+        optionButton.addEventListener("click", (e) => {
+            if (optionButton.disabled) return;
+
+            const isCorrect = e.target.value === currentQuestion.answer;
+            optionButton.classList.add(isCorrect ? "answer" : "incorrect");
+
+            disableAllOptions();
+
+            if (isCorrect) {
+                score++;
+            }
+        });
+
+        optionsContainer.appendChild(optionButton);
     });
-  
-    
-    optionsContainer.appendChild(option);
 }
 
-    
+function disableAllOptions() {
+    document.querySelectorAll(".ans").forEach(button => {
+        button.disabled = true;
+    });
 }
 
-function checkAnswerForButton(e){
-    const selectedBtn = e.target.value;
-    console.log(selectedBtn);
-    const isCorrect = selectedBtn.dataset.answer === answer;
-    if(isCorrect){
-       selectedBtn.classList.add("answer")
-    }else{
-        selectedBtn.classList.add("incorrect")
-    }
-}
-
-function checkAnswer(selectedOption) {
-    if (selectedOption === quizQuestions[currentQuiz].answer) {
-        score++;
-    }
-    currentQuiz++;
-    if (currentQuiz < quizQuestions.length) {
-        showQuestion();
-    } else {
-        // Show final score or end of quiz message
-        console.log(score)
-    }
+function showFinalScore() {
+    document.querySelector(".question-div").innerHTML = `Your score is ${score} out of ${quizQuestions.length}`;
+    optionsContainer.innerHTML = '';
+    submitButton.innerHTML = '';
+    submitButton.classList.remove("submit-btn");
 }
 
 loadQuiz();
-
-// const q1 = changingQuestions[0];
-
-// q1.innerHTML = questions[0].question;
-
-// const a1 = changingAnswerOne[0];
-
-// a1.innerHTML = questions[0].options1[0]
-
-// const a2 = changingAnswerTwo[0];
-
-// a2.innerHTML = questions[0].options1[1]
-
-// const a3 = changingAnswerThree[0];
-
-// a3.innerHTML = questions[0].options1[2]
-
-// const a4 = changingAnswerFour[0];
-
-// a4.innerHTML = questions[0].options1[3]
