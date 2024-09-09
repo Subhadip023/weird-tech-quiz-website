@@ -1,0 +1,102 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: hsl(271, 46%, 39%);
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 300;
+}
+
+.main{
+    width: 90%;
+    margin: 13vh;
+}
+
+.quiz-container{
+    width: 96%;
+    height: 97%;
+    border: 7px solid #EA50AE;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #2b0b48;
+}
+
+.question-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.6vh;
+}
+
+.question{
+    color: #c5e0e0;
+    font-size: 2.4vw;
+}
+
+.heading{
+    border-bottom: 0.7px solid white;
+    padding-bottom: 4vh;
+    margin-top: 6vh;
+    color: #609b9b;
+    font-size: 2.4vw;
+}
+
+.answer-div button{
+    border: 5px solid #7f7e85;
+    border-radius: 17px;
+    background-color: transparent;
+    color: #a1c5c5;
+    margin: 1.8vh;
+    font-size: 1.5vw;
+    padding: 1.8vh;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.answer-div button:hover{
+    background-color: hsl(271, 40%, 55%);
+    color: #eaf1f1;
+}
+
+.answer-div button{
+    border: 5px solid #7f7e85;
+    border-radius: 17px;
+    background-color: transparent;
+    color: #a1c5c5;
+    margin: 1.6vh;
+    font-size: 1.5vw;
+    padding: 1.8vh;
+    cursor: pointer;
+}
+
+.answer-div input{
+    margin-right: 2vh;
+}
+
+.submit-btn{
+    background-color: hsl(271, 51%, 67%);
+    color: #162b2b;
+    border: 2px solid #7f7e85;
+    border-radius: 9px;
+    margin: 1.6vh;
+    font-size: 1.5vw;
+    padding: 1.8vh;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.submit-btn:hover{
+    background-color: transparent;
+    color: #eaf1f1;
+}
+
+.answer{
+    background-color: #79a56e;
+    border-color: #79a56e;
+}
+
+.incorrect{
+    background-color: red;
+}
