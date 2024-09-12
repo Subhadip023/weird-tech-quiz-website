@@ -1,4 +1,3 @@
-console.log("quiz app");
 
 let quizQuestions = [
    {
@@ -62,94 +61,74 @@ let quizQuestions = [
     },
 ]
 
-const changingQuestions = document.querySelectorAll(".question");
-
-const changingAnswerOne = document.querySelectorAll(".ans-one");
-
-const changingAnswerTwo = document.querySelectorAll(".ans-two");
-
-const changingAnswerThree = document.querySelectorAll(".main-ans");
-
-const changingAnswerFour = document.querySelectorAll(".ans-three");
-
-const submit = document.querySelectorAll(".submit-btn");
+const changingQuestions = document.querySelector(".question");
+const optionsContainer = document.querySelector(".answer-div");
+const submitButton = document.querySelector(".submit-btn");
 
 let currentQuiz = 0;
-
 let score = 0;
 
-function loadQuiz () {
+// Load initial quiz
+function loadQuiz() {
     currentQuiz = 0;
     score = 0;
-    submit.innerHTML = "next";
-    showQuestion();
+    submitButton.innerHTML = "Next";
+    showQuestion(currentQuiz);
 }
 
-function showQuestion (){
-    let currentQuestion = quizQuestions[currentQuiz];
-    let qNo = currentQuiz + 1;
-    changingQuestions[0].innerHTML = qNo + ". " + currentQuestion.question;
+submitButton.addEventListener("click", () => {
+    currentQuiz++;
+    if (currentQuiz < quizQuestions.length) {
+        showQuestion(currentQuiz);
+    } else {
+        showFinalScore();
+    }
+});
 
-    changingAnswerOne[0].innerHTML = currentQuestion.option[0];
-    changingAnswerTwo[0].innerHTML = currentQuestion.option[1];
-    changingAnswerThree[0].innerHTML = currentQuestion.option[2];
-    changingAnswerFour[0].innerHTML = currentQuestion.option[3];
-
-    const optionsContainer = document.querySelector(".answer-div");
+function showQuestion(index) {
+    const currentQuestion = quizQuestions[index];
+    
+    // Update the question text
+    changingQuestions.innerHTML = `${index + 1}. ${currentQuestion.question}`;
+    
+    // Clear previous options
     optionsContainer.innerHTML = "";
 
-    currentQuestion.option.forEach((optionText, index) => {
-        const button = document.createElement("button");
-        button.innerHTML = optionText;
-        button.classList.add("btn");
-        optionsContainer.appendChild(button);
-        if(optionText.answer){
-          button.dataset.answer = option.answer
-        }
-        button.addEventListener("click", checkAnswer);
+    // Generate new options
+    currentQuestion.option.forEach(optionText => {
+        const optionButton = document.createElement("button");
+        optionButton.classList.add("ans");
+        optionButton.innerHTML = optionText;
+        optionButton.value = optionText;
+
+        optionButton.addEventListener("click", (e) => {
+            if (optionButton.disabled) return;
+
+            const isCorrect = e.target.value === currentQuestion.answer;
+            optionButton.classList.add(isCorrect ? "answer" : "incorrect");
+
+            disableAllOptions();
+
+            if (isCorrect) {
+                score++;
+            }
+        });
+
+        optionsContainer.appendChild(optionButton);
     });
 }
 
-function checkAnswer(e){
-    const selectedBtn = e.target;
-    const isCorrect = selectedBtn.dataset.answer === answer;
-    if(isCorrect){
-       selectedBtn.classList.add("answer")
-    }else{
-        selectedBtn.classList.add("incorrect")
-    }
+function disableAllOptions() {
+    document.querySelectorAll(".ans").forEach(button => {
+        button.disabled = true;
+    });
 }
 
-function checkAnswer(selectedOption) {
-    if (selectedOption === quizQuestions[currentQuiz].answer) {
-        score++;
-    }
-    currentQuiz++;
-    if (currentQuiz < quizQuestions.length) {
-        showQuestion();
-    } else {
-        // Show final score or end of quiz message
-    }
+function showFinalScore() {
+    document.querySelector(".question-div").innerHTML = `Your score is ${score} out of ${quizQuestions.length}`;
+    optionsContainer.innerHTML = '';
+    submitButton.innerHTML = '';
+    submitButton.classList.remove("submit-btn");
 }
 
 loadQuiz();
-
-// const q1 = changingQuestions[0];
-
-// q1.innerHTML = questions[0].question;
-
-// const a1 = changingAnswerOne[0];
-
-// a1.innerHTML = questions[0].options1[0]
-
-// const a2 = changingAnswerTwo[0];
-
-// a2.innerHTML = questions[0].options1[1]
-
-// const a3 = changingAnswerThree[0];
-
-// a3.innerHTML = questions[0].options1[2]
-
-// const a4 = changingAnswerFour[0];
-
-// a4.innerHTML = questions[0].options1[3]
