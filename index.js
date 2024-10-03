@@ -3,7 +3,7 @@ let quizQuestions = [
    {
         question: "What does 'HTTP' stand for?",
         option: ["HyperText Transfer Protocol", "High Text Transfer Protocol", "Hyper Tech Transmission Protocol", "High Transfer Text Protocol",],
-        answer: "High Transfer Text Protocol"
+        answer: "HyperText Transfer Protocol"
     },
 
     {
