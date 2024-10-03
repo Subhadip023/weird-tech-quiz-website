@@ -94,12 +94,18 @@ function showQuestion(index) {
     // Clear previous options
     optionsContainer.innerHTML = "";
 
+     let correctOptionButton;
+
     // Generate new options
     currentQuestion.option.forEach(optionText => {
         const optionButton = document.createElement("button");
         optionButton.classList.add("ans");
         optionButton.innerHTML = optionText;
         optionButton.value = optionText;
+
+         if (optionText === currentQuestion.answer) {
+            correctOptionButton = optionButton;
+        }
 
         optionButton.addEventListener("click", (e) => {
             if (optionButton.disabled) return;
@@ -108,6 +114,10 @@ function showQuestion(index) {
             optionButton.classList.add(isCorrect ? "answer" : "incorrect");
 
             disableAllOptions();
+
+            if (!isCorrect) {
+                correctOptionButton.classList.add("answer");
+            }
 
             if (isCorrect) {
                 score++;
